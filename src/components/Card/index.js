@@ -10,12 +10,13 @@ import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import ShareIcon from "@mui/icons-material/Share";
-
+import { useEffect  ,useState} from "react";
 import CNN from "../../assets/NewsLogo/cnn.jpg"
 
 import "./styles.css";
 
 export default function NewsCard() {
+    const [HomeNews,setHomeNews]=useState([])
     function toTitleCase(str) {
         return str.replace(/\w\S*/g, function (txt) {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -28,9 +29,20 @@ export default function NewsCard() {
         } else return str;
     };
 
+    useEffect(()=>{
+        fetch("http://localhost:5000/news",{
+            method:"get",
+        }).then(res=>res.json())
+        .then((result)=>{
+            setHomeNews(result);
+            console.log(result)
+        })
+    },[])
 
     return (
         <div className="newsCard">
+            { HomeNews && HomeNews.length >0 && HomeNews.map((item)=>{
+                return (
             <Card
                 sx={{
                     borderRadius: "1.5rem",
@@ -40,7 +52,8 @@ export default function NewsCard() {
                     display: "inline-block",
                     boxShadow: "2px 2px 8px gray"
                 }}
-            >
+                >
+
                 {/* <Link to={`/news/${news._id}`} className="news-list__link"> */}
                 {/* <Link to={`/`} className="news-list__link"> */}
 
@@ -55,7 +68,7 @@ export default function NewsCard() {
                             }
                             title={
                                 <p className="card__genre">
-                                    {toTitleCase("Politics")}
+                                    {toTitleCase(item.genre)}
                                 </p>
                             }
                         />
@@ -68,7 +81,7 @@ export default function NewsCard() {
                             component="img"
                             height="194"
                             // src={news.image_link.length===0 ? Placeholder : news.image_link}
-                            src="https://media.cnn.com/api/v1/images/stellar/prod/231110210019-rfk-jr-file-111023.jpg?c=16x9&q=h_438,w_780,c_fill"
+                            src={item.image_link}
                             alt="News Image"
                         />
                         <CardContent>
@@ -81,7 +94,7 @@ export default function NewsCard() {
                                     color: "#4d4d4d",
                                 }}
                             >
-                                {trimTitle(" How RFK Jr. could change the outcome of the 2024 election")}
+                                {trimTitle(item.title)}
                                
                             </Typography>
                         </CardContent>
@@ -106,10 +119,12 @@ export default function NewsCard() {
                         <ShareIcon sx={{ fontSize: "2rem", color: "black" }} />
                     </Button> 
                     {/* <span className="card__date">{date(news.date)}</span> */}
-                    <span className="card__date">12 Nov,2023</span>
+                    <span className="card__date">{item.date.substr(0,10)}</span>
 
                 </CardActions>
             </Card>
+                )
+            })}
         </div>
     );
 }

@@ -7,6 +7,7 @@ const StyBox =styled(Box)`
     margin: 0px 10px 0 10px;
     justify-content:space-around;
     overflow-x:scroll;
+
 `
 const StyTypo= styled(Typography)(({ theme }) => ({
     fontSize:"small",

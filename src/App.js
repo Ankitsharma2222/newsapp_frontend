@@ -1,5 +1,5 @@
 import './App.css';
-import Nav from './components/Navbar'; 
+import Nav from './components/Navbar' 
 import NewsCard from "./components/Card"
 function App() {
   return (
@@ -7,11 +7,7 @@ function App() {
       <Nav/>
       <div>
         <NewsCard/>
-        <NewsCard/>
-        <NewsCard/>
-        <NewsCard/>
-
-
+   
       </div>
     </div>
   );
