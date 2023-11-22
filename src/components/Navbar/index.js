@@ -1,6 +1,6 @@
 import { Box , ButtonBase, styled ,Typography } from '@mui/material';
 import React from 'react'
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Data from '../../Data_Resources/data';
 const StyBox =styled(Box)`
     display:flex;
@@ -23,25 +23,26 @@ const InnerImgBox=styled(Box)`
     text-align:center;
 
 `      
-function data(info){
-    // const navigate=useNavigate()
-    return(
-        <InnerImgBox style={{cursor:"pointer"}}>
-            <ButtonBase >
-            <img src={info.url} style={{height:"3vw"}}></img>
-            <StyTypo >{info.text}</StyTypo>
-            </ButtonBase>
-        </InnerImgBox>
-    )
-}
-function nav(){
+export default function Nav(){
+    const navigate=useNavigate()
 
     return(
         <StyBox >
             {
-                Data.map(data)
+                Data.map(info=>{
+                    return(
+                        <InnerImgBox style={{cursor:"pointer"}} onClick={()=>navigate("/news/list/"+info.text)}>
+                            <ButtonBase  >
+                              
+                                    <img src={info.url} style={{height:"3vw"}}></img>
+                                    <StyTypo >{info.text}</StyTypo>
+
+                               
+                            </ButtonBase>
+                        </InnerImgBox>
+                    )
+                })
             }
         </StyBox>
     )
 }
-export default nav;

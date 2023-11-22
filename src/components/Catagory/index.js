@@ -13,11 +13,11 @@ import ShareIcon from "@mui/icons-material/Share";
 import { useEffect  ,useState} from "react";
 import CNN from "../../assets/NewsLogo/cnn.jpg"
 import { useNavigate } from "react-router-dom";
-import "./styles.css";
-
-export default function NewsCard() {
+import { useParams } from "react-router-dom";
+export default function Catagory() {
     const [HomeNews,setHomeNews]=useState([])
     const navigate=useNavigate()
+    const genre=useParams().genre
     function toTitleCase(str) {
         return str.replace(/\w\S*/g, function (txt) {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -31,11 +31,13 @@ export default function NewsCard() {
     };
 
     useEffect(()=>{
-        fetch("http://localhost:5000/news",{
+        fetch(`http://localhost:5000/news/list/${genre}`,{
             method:"get",
         }).then(res=>res.json())
         .then((result)=>{
+            console.log(result)
             setHomeNews(result);
+
         })
     },[])
     
@@ -44,6 +46,7 @@ export default function NewsCard() {
 
     return (
         <div className="newsCard">
+            <h2> Results Realted to {genre} </h2>
             { HomeNews && HomeNews.length >0 && HomeNews.map((item)=>{
                 return (
             <Card
@@ -57,8 +60,7 @@ export default function NewsCard() {
                 }}
                 onClick={()=>navigate("/news/"+item._id)} >
 
-                {/* <Link to={`/news/${news._id}`} className="news-list__link"> */}
-                {/* <Link to={`/`} className="news-list__link"> */}
+            
 
                     <CardActionArea>
                         <CardHeader
